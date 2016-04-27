@@ -1,4 +1,4 @@
-//= require select2
+//= require select2-full
 //= require_self
 
 $(function() {
@@ -16,7 +16,9 @@ $(function() {
           method = $(el).data('method'),
           selectOptions = {
             width: '80%',
-            tags: $(el).data('collection')
+            tags: true,
+            multiple: true,
+            data: $(el).data('collection')
           };
 
       if(!!model) {
@@ -133,6 +135,7 @@ $(function() {
       var select2Config = {
         width: '80%',
         containerCssClass: 'nested-select-container',
+        multiple: true,
         minimumInputLength: minimumInputLength,
         initSelection: function(element, callback) {
           var id = $(element).val();
