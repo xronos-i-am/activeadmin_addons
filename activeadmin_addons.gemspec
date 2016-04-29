@@ -33,5 +33,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "paperclip"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "poltergeist"
+  s.add_development_dependency "quiet_assets"
   s.add_development_dependency "database_cleaner"
 end
