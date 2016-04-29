@@ -78,10 +78,10 @@ $(function() {
         url: url,
         dataType: 'json',
         delay: 250,
-        data: function(term) {
+        data: function(params) {
           var textQuery = { m: 'or' };
           fields.forEach(function(field) {
-            textQuery[field + '_contains'] = term;
+            textQuery[field + '_contains'] = params.term;
           });
 
           var query =  {
@@ -98,7 +98,7 @@ $(function() {
 
           return query;
         },
-        results: function(data, page) {
+        processResults: function(data, params) {
           if(data.constructor == Object) {
             data = data[responseRoot];
           }

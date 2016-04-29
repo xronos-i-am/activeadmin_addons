@@ -1,4 +1,5 @@
-@import "select2";
+//= require "select2"
+// @import "select2";
 @import "jquery.xdan.datetimepicker";
 @import "../palette-color-picker";
 
@@ -32,4 +33,12 @@ input[type=text] {
   &.date-time-picker {
     width: 110px;
   }
+}
+
+.select2-search--inline {
+  line-height: 30px;
+}
+
+.select2-selection__choice {
+  line-height: 20px;
 }

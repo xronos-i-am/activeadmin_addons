@@ -20,6 +20,7 @@ ActiveAdmin.register Invoice do
   show do
     attributes_table do
       row :id
+      row :category
       tag_row :state
       bool_row :paid
       list_row :skills, list_type: :ol
