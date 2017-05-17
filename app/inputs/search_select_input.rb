@@ -20,8 +20,10 @@ class SearchSelectInput < Formtastic::Inputs::SelectInput
   end
 
   def collection
+    display_name = @options[:display_name] || "name"
     if !@object.nil?
-      { get_selected_value => @object[method] }
+      @object.send(method.to_sym).map {|i| [i.send(display_name.to_sym), i.id]}
+      #{ get_selected_value => @object.send(method.to_sym) }
     else
       { '': '' }
     end
