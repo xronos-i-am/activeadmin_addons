@@ -1,10 +1,10 @@
 //= require select2-full
 //= require_self
 
-$(function() {
+$(function () {
   configureSelect2(document);
 
-  $(document).on('has_many_add:after', function(event, container){
+  $(document).on('has_many_add:after', function (event, container) {
     configureSelect2(container);
   });
 
@@ -17,19 +17,21 @@ $(function() {
     setupTags();
 
     function setupTags() {
-      $('.select2-tags', container).each(function(i, el) {
+      $('.select2-tags', container).each(function (i, el) {
         var model = $(el).data('model'),
-            method = $(el).data('method'),
-            width = $(el).data('width'),
-            selectOptions = {
-              width: width || DEFAULT_SELECT_WIDTH,
-              tags: true,
-              multiple: true,
-              data: $(el).data('collection')
-            };
+          method = $(el).data('method'),
+          width = $(el).data('width'),
+          selectOptions = {
+            width: width || DEFAULT_SELECT_WIDTH,
+            tags: true,
+            multiple: true,
+            data: $(el).data('collection')
+          };
 
-        if(!!model) {
-          selectOptions.createSearchChoice = function() { return null; };
+        if (!!model) {
+          selectOptions.createSearchChoice = function () {
+            return null;
+          };
           var prefix = model + '_' + method;
           $(el).on('select2-selecting', onItemAdded);
           $(el).on('select2-removed', onItemRemoved);
@@ -38,7 +40,7 @@ $(function() {
         $(el).select2(selectOptions);
 
         function onItemRemoved(event) {
-          var itemId = '[id=\'' + prefix +  '_' + event.val + '\']';
+          var itemId = '[id=\'' + prefix + '_' + event.val + '\']';
           $(itemId).remove();
         }
 
@@ -58,7 +60,8 @@ $(function() {
     }
 
     function setupAjaxSearch() {
-      $('.select2-ajax', container).each(function(i, el) {
+
+      $('.select2-ajax', container).each(function (i, el) {
         var url = $(el).data('url');
         var fields = $(el).data('fields');
         var displayName = $(el).data('display_name');
@@ -78,9 +81,9 @@ $(function() {
           url: url,
           dataType: 'json',
           delay: 250,
-          data: function(params) {
-            var textQuery = { m: 'or' };
-            fields.forEach(function(field) {
+          data: function (params) {
+            var textQuery = {m: 'or'};
+            fields.forEach(function (field) {
               if (field == "id") {
                 textQuery[field + '_eq'] = params.term;
               } else {
@@ -88,7 +91,7 @@ $(function() {
               }
             });
 
-            var query =  {
+            var query = {
               order: order,
               q: {
                 groupings: [textQuery],
@@ -106,13 +109,13 @@ $(function() {
 
             return query;
           },
-          processResults: function(data) {
-            if(data.constructor == Object) {
+          processResults: function (data) {
+            if (data.constructor == Object) {
               data = data[responseRoot];
             }
 
             return {
-              results: jQuery.map(data, function(resource) {
+              results: jQuery.map(data, function (resource) {
                 return {
                   id: resource.id,
                   text: resource[displayName].toString()
@@ -123,17 +126,17 @@ $(function() {
           cache: true
         };
 
-        var collectionOptions = function(query) {
-          var data = { results: [] };
+        var collectionOptions = function (query) {
+          var data = {results: []};
 
-          collection.forEach(function(record) {
-            var matched = fields.some(function(field) {
+          collection.forEach(function (record) {
+            var matched = fields.some(function (field) {
               var regex = new RegExp(query.term, 'i');
               return !!record[field] && !!record[field].match(regex);
             });
 
-            if((!parent || record[parent] == parentId) && matched) {
-              data.results.push({ id: record.id, text: record[displayName].toString() });
+            if ((!parent || record[parent] == parentId) && matched) {
+              data.results.push({id: record.id, text: record[displayName].toString()});
             }
           });
 
@@ -143,22 +146,23 @@ $(function() {
         if (!!parent) {
           var parentSelector = '#' + model + '_' + parent;
 
-          $(el).parent().find(parentSelector).on('change', function(e) {
+          $(el).parent().find(parentSelector).on('change', function (e) {
             selectInstance.val(null).trigger('change');
             parentId = e.val;
 
-            if(!parentId) {
+            if (!parentId) {
               parentId = INVALID_PARENT_ID;
             }
           });
         }
 
         var select2Config = {
+          theme: 'classic',
           width: width,
           containerCssClass: 'nested-select-container',
           minimumInputLength: minimumInputLength,
           placeholder: ' ',
-          allowClear: true,
+          allowClear: true
         };
 
         if (multiple) {
@@ -177,7 +181,7 @@ $(function() {
 
     function setupSelect2(select) {
       var firstOption = $('option', select).first(),
-          allowClear  = false;
+        allowClear = false;
 
       if (firstOption.val() === "" && firstOption.text() === "") {
         allowClear = true;
@@ -199,13 +203,13 @@ $(function() {
     }
 
     function setupDefaultBehaviour() {
-      if(ActiveadminAddons.config.defaultSelect == 'select2') {
-        $('select:not(.default-select)', container).each(function(i, el) {
+      if (ActiveadminAddons.config.defaultSelect == 'select2') {
+        $('select:not(.default-select)', container).each(function (i, el) {
           setupSelect2(el);
         });
       }
 
-      $('select.select2', container).each(function(i, el) {
+      $('select.select2', container).each(function (i, el) {
         setupSelect2(el);
       });
     }
