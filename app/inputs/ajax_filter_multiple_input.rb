@@ -21,7 +21,7 @@ class AjaxFilterMultipleInput < Formtastic::Inputs::SelectInput
   def collection
     display_name = @options[:display_name] || "name"
 
-    filter_class = method.to_s.chomp("_in").chomp("_id").classify.constantize
+    filter_class = (@options[:search_class] || method.to_s.chomp("_in").chomp("_id")).classify.constantize
     selected_value = @object.conditions.find {|c| c.attributes.map(&:name).include? method.to_s.chomp('_in')}.values.map(&:value) rescue nil
     unless selected_value.blank?
       # data = filter_class.select([:id] | @options[:fields].to_a).where(id: selected_value)
