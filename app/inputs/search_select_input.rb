@@ -24,10 +24,10 @@ class SearchSelectInput < Formtastic::Inputs::SelectInput
     if !@object.nil?
       assoc = @object.send(method.to_sym)
       if assoc
-        unless @options[:multiple]
+        unless multiple?
           assoc = [assoc]
         end
-        assoc.map {|i| [i.send(display_name.to_sym), i.id]}
+        assoc.to_a.map {|i| [i.send(display_name.to_sym), i.id]}
       else
         {'': ''}
       end
