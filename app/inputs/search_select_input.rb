@@ -14,7 +14,6 @@ class SearchSelectInput < Formtastic::Inputs::SelectInput
     opts["data-per_page"] = @options[:per_page] if @options[:per_page]
     if @options[:multiple]
       opts["data-multiple"] = 'true'
-      opts[:name] = super[:name] + '[]'
     end
     super.merge opts
   end
