@@ -41,7 +41,7 @@ class AjaxFilterInput < Formtastic::Inputs::SelectInput
 
   # rubocop:disable Style/RescueModifier
   def get_selected_value(display_name = @options[:display_name] || "name")
-    filter_class = method.to_s.chomp("_id").classify.constantize rescue @object.klass
+    filter_class = @object.klass.reflections.values.detect { |r| r.foreign_key == method.to_s }.klass rescue @object.klass
     selected_value = @object.conditions.find { |c| c.attributes.map(&:name).include?(method.to_s) }.values.first.value rescue nil
     filter_class.find(selected_value).send(display_name) if !!selected_value
   end
